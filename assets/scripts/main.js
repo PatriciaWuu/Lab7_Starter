@@ -45,7 +45,6 @@ async function init() {
     console.log(`Error fetching recipes: ${err}`);
     return;
   }
-
   createRecipeCards();
   bindShowMore();
   bindEscKey();
@@ -61,19 +60,16 @@ function initializeServiceWorker() {
    *  TODO - Part 2 Step 1
    *  Initialize the service worker set up in sw.js
    */
-   if ('sW'in navigator){
-      window.addEventListener('load', function() {
-      navigator.sW.register('sw.js')
-      .then(function(regist) {
-      // Regis success
-        console.log('registra success', regist.scope);
-      }
-        ,function(err){
-        //fail
-          console.log('failed: ', err);
+   if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/sw.js').then(function(registration) {
+        // Registration success
+        console.log('Registration success with scope: ', registration.scope);
+      }, function(err) {
+        //failed :(
+        console.log('Opos!  failed: ', err);
       });
     });
-  }
 }
 
 /**
@@ -140,19 +136,18 @@ function createRecipeCards() {
    */
   for(let i = 0; i < recipes.length;i++){
     const recipeCard = document.createElement('recipe-card');
-    recipeCard.data = recipeData[recipes[i]];
     if(i > 2){
       recipeCard.classList.add('hidden');
     }
+    recipeCard.data = recipeData[recipes[i]];
     const page = recipeData[recipes[i]]['page-name'];
-  router.addPage(page, function() {
-    document.querySelector('.section--recipe-cards').classList.remove('shown');
-    document.querySelector('.section--recipe-expand').classList.add('shown');
-    document.querySelector('recipe-expand').data = recipeData[recipes[i]];
-  });
-  
-  bindRecipeCard(recipeCard, page);
-  document.querySelector('.recipe-cards--wrapper').appendChild(recipeCard);
+    router.addPage(page, function() {
+      document.querySelector('.section--recipe-cards').classList.remove('shown');
+      document.querySelector('.section--recipe-expand').classList.add('shown');
+      document.querySelector('recipe-expand').data = recipeData[recipes[i]];
+    });
+    bindRecipeCard(recipeCard, page);
+    document.querySelector('.recipe-cards--wrapper').appendChild(recipeCard);
   }
 
 
@@ -216,7 +211,6 @@ function bindEscKey() {
 document.addEventListener('keydown', function(event){
   if(event.key === "Escape"){
     router.navigate('home',false);
-    //bindPopstate();
   }
 })
 
@@ -243,15 +237,13 @@ function bindPopstate() {
    */
    window.addEventListener('popstate',function(event){
       if(event.state){
-        router.navigate(event.state.name, true);
+        router.navigate(event.state, true);
       }
       else{
         router.navigate('home', true);
       }
   });
 }
-
-main.js
-
+}
 
 
