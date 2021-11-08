@@ -67,7 +67,7 @@ export class Router {
      *  4. Finally, call the stored function for the given page
      */
     if(!this[page]){
-      console.log("error", err);
+      console.log("error", this);
       return;    
     }
     let hash = "";
@@ -75,7 +75,7 @@ export class Router {
       hash = "#" + page;
     }
     if(!statePopped && window.location.hash !== hash){
-      history.pushState({page},"", window.location.pathname + hash);
+      history.pushState({name: page},"", window.location.origin + hash);
     }
     this[page]();
   }
