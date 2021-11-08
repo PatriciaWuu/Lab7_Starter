@@ -16,14 +16,13 @@ self.addEventListener('install', function (event) {
    * TODO - Part 2 Step 2
    * Create a function as outlined above
    */
-  event.waitUntil(
+   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(function(cacheInstall){
-        console.log('Cache opened!');
+      .then(function(cacheInstall) {
+        console.log('cache opened!');
         return cacheInstall.addAll(recipesUrl);
-    })
-
-  )
+      })
+  );
 });
 
 
@@ -46,14 +45,14 @@ self.addEventListener('fetch', function (event) {
    * TODO - Part 2 Step 4
    * Create a function as outlined above
    */
-  event.respondWith(
+   event.respondWith(
     caches.match(event.request)
-      .then(function(respon){
-        if(respon){
-          return respon;
+      .then(function(response) {
+        if (response) {
+          return response;
         }
         return fetch(event.request);
       }
     )
   );
-});
+  });
