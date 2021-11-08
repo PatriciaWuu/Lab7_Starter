@@ -72,6 +72,7 @@ function initializeServiceWorker() {
     });
 }
 }
+
 /**
  * Loading JSON into a JS file is oddly not super straightforward (for now), so
  * I built a function to load in the JSON files for you. It places all of the recipe data
